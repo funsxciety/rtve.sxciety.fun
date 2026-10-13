@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Estudia los 18 temas de Técnica Informática RTVE con 384 preguntas, test, Trivial y flashcards.">
+  <title>RTVE Estudio · Técnica Informática</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="scripts.js" defer></script>
+</head>
+<body class="view-home">
+  <header class="site-header"><a class="brand" href="index.html" aria-label="RTVE Estudio, inicio"><span class="brand-mark" aria-hidden="true">r.</span><span>RTVE Estudio<small>Técnica Informática · Banco de datos</small></span></a><span class="local-badge">Solo tú. A tu ritmo.</span></header>
+  <main id="main">
+    <section id="home-view" class="home-view" aria-labelledby="page-title">
+      <p class="eyebrow">UN POCO CADA DÍA</p>
+      <h1 id="page-title">Tu próxima respuesta<br>empieza aquí.</h1>
+      <p class="intro-copy">Elige qué estudiar. Entiende el porqué. Vuelve a intentarlo.</p>
+      <div class="library-stats"><span><strong id="question-total">384</strong> preguntas</span><span><strong>18</strong> temas oficiales</span><span><strong id="learned-total">0</strong> aprendidas</span></div>
+      <button id="go-play" class="primary-button" type="button">Go to play <span aria-hidden="true">↗</span></button>
+    </section>
+    <section id="selection-view" class="selection-view" aria-labelledby="selection-title" hidden>
+      <div class="selection-heading"><div><p class="eyebrow">TU SESIÓN, TUS TEMAS</p><h1 id="selection-title" tabindex="-1">¿Qué quieres estudiar?</h1></div><button id="go-home" class="text-button" type="button">← Inicio</button></div>
+      <nav class="mode-switch" aria-label="Modo de estudio"><button type="button" class="mode-button is-active" data-mode="kahoot" aria-pressed="true">Kahoot<span>Acierto y velocidad</span></button><button type="button" class="mode-button" data-mode="trivial" aria-pressed="false">Trivial<span>Una pieza por tema</span></button><button type="button" class="mode-button" data-mode="flashcards" aria-pressed="false">Flashcards<span>Aprende sin prisa</span></button></nav>
+      <p id="mode-description" class="mode-description"></p>
+      <fieldset class="topic-picker"><legend>Temario oficial · Anexo 1</legend><div class="topic-tools"><span>Incluye los temas que quieras</span><div><button id="select-all" type="button" class="text-button">Todos</button><button id="select-none" type="button" class="text-button">Ninguno</button></div></div><div id="topic-list" class="topic-list"></div></fieldset>
+      <div class="selection-actions"><div><p id="selection-count" role="status"></p><p class="best-mark">Mejor marca Kahoot: <strong id="best-score">0</strong></p></div><button id="play-now" type="button" class="primary-button">Jugar ahora <span aria-hidden="true">↗</span></button></div>
+    </section>
+  </main>
+  <footer class="site-footer"><span>Material de preparación · No oficial</span><a href="BANCO_PREGUNTAS_RTVE_TECNICA_INFORMATICA_BD.md">Banco y fuentes ↗</a></footer>
+  <dialog id="game-dialog" class="game-dialog" aria-labelledby="game-title"><div class="game-shell"><header class="game-header"><div><span class="eyebrow">RTVE / ESTUDIO</span><h2 id="game-title">Kahoot</h2></div><button id="close-game" type="button" class="secondary-button" aria-label="Cerrar juego y volver a la selección">Cerrar <span aria-hidden="true">×</span></button></header><div class="game-content">
+        <section id="kahoot-view" class="mode-view" aria-label="Kahoot individual">
+          <div id="kahoot-play" hidden>
+            <div class="question-meta"><p id="kahoot-meta"></p><span id="kahoot-position"></span></div>
+            <div class="timer-row"><span><strong id="timer-seconds">30</strong> s <span id="timer-state">restantes</span></span><button type="button" id="pause-timer" class="text-button" aria-pressed="false">Pausar</button></div>
+            <progress id="timer-progress" class="timer-progress" max="30" value="30" aria-label="Tiempo restante en segundos"></progress>
+            <h3 id="kahoot-question" class="question-title" tabindex="-1"></h3>
+            <ol id="kahoot-options" class="answer-options" aria-label="Opciones de respuesta"></ol>
+            <div id="kahoot-feedback" class="feedback" role="status" hidden></div>
+            <div class="question-bottom"><span>Puntos <strong id="kahoot-score">0</strong></span><span class="keyboard-hint">Teclas 1–4 para responder</span></div>
+            <button type="button" id="kahoot-next" class="primary-button" hidden>Siguiente pregunta <span aria-hidden="true">→</span></button>
+          </div>
+          <section id="kahoot-result" class="result-panel" aria-labelledby="result-title" hidden>
+            <span class="result-symbol" aria-hidden="true">✓</span><p class="eyebrow">ENTRENAMIENTO COMPLETADO</p>
+            <h3 id="result-title" tabindex="-1">Una sesión más.<br>Un paso adelante.</h3>
+            <div class="result-score"><strong id="result-score">0</strong><span>puntos</span></div>
+            <p id="result-accuracy" class="muted"></p>
+            <section id="result-review-area" aria-label="Repaso de errores"><h4 id="result-review-question"></h4><div id="result-review" class="feedback"></div><div class="pager"><button id="review-prev" type="button" class="text-button" aria-label="Error anterior">←</button><span id="result-review-position"></span><button id="review-next" type="button" class="text-button" aria-label="Error siguiente">→</button></div></section>
+            <button type="button" id="restart-kahoot" class="primary-button">Otra ronda <span aria-hidden="true">↗</span></button>
+          </section>
+        </section>
+
+        <section id="trivial-view" class="mode-view" aria-label="Trivial por categorías" hidden>
+          <div id="trivial-board-area"><div class="board-status"><span id="trivial-progress-text"></span><span>3 aciertos por tema</span></div><progress id="trivial-progress" max="54" value="0" aria-label="Aciertos del tablero"></progress><div id="trivial-board" class="trivial-board" aria-label="Temas del tablero"></div><div class="pager"><button id="board-prev" type="button" class="text-button" aria-label="Temas anteriores">←</button><span id="board-position"></span><button id="board-next" type="button" class="text-button" aria-label="Temas siguientes">→</button></div></div>
+          <div id="trivial-complete" class="board-complete" role="status" hidden><h3>Tablero completo.</h3><p>Has completado todos los temas seleccionados.</p><button id="reset-trivial" type="button" class="primary-button">Nuevo tablero</button></div>
+          <div id="trivial-play" class="trivial-play" hidden>
+            <div class="question-meta"><p id="trivial-meta"></p><span id="trivial-position"></span></div>
+            <h3 id="trivial-question" class="question-title" tabindex="-1"></h3>
+            <ol id="trivial-options" class="answer-options" aria-label="Opciones de respuesta"></ol>
+            <div id="trivial-feedback" class="feedback" role="status" hidden></div>
+            <button type="button" id="trivial-next" class="primary-button" hidden>Volver al tablero <span aria-hidden="true">→</span></button>
+          </div>
+        </section>
+
+        <section id="flashcards-view" class="mode-view" aria-label="Flashcards de repaso" hidden>
+          <div class="flash-scopes" aria-label="Filtrar tarjetas">
+            <button type="button" data-scope="all" aria-pressed="true" class="scope-button is-active">Todas</button>
+            <button type="button" data-scope="review" aria-pressed="false" class="scope-button">Repasar <span id="review-count">0</span></button>
+            <button type="button" data-scope="learned" aria-pressed="false" class="scope-button">Aprendidas <span id="learned-count">0</span></button>
+          </div>
+          <div id="flash-session">
+            <div class="question-meta"><p id="flash-meta"></p><span id="flash-position"></span></div>
+            <div class="flash-stage">
+              <button type="button" id="flash-card" class="flash-card" aria-pressed="false" aria-label="Mostrar respuesta">
+                <span class="flash-inner">
+                  <span id="flash-front-face" class="flash-face flash-front"><span class="tiny-label">PREGUNTA</span><strong id="flash-front" class="flash-question"></strong><span class="flip-hint">Toca para descubrir <span aria-hidden="true">↻</span></span></span>
+                  <span id="flash-back-face" class="flash-face flash-back" aria-hidden="true"><span class="tiny-label">RESPUESTA</span><strong id="flash-answer" class="flash-question"></strong><span id="flash-explanation" class="flash-explanation"></span><span class="flip-hint">Toca para volver <span aria-hidden="true">↻</span></span></span>
+                </span>
+              </button>
+            </div>
+            <p id="flash-guidance" class="flash-guidance">Primero intenta responder. Después gira la tarjeta.</p>
+            <div class="flash-actions"><button type="button" id="mark-review" class="secondary-button" disabled>Repasar <span aria-hidden="true">↻</span></button><button type="button" id="mark-learned" class="primary-button" disabled>Aprendido <span aria-hidden="true">✓</span></button></div>
+            <button type="button" id="skip-flash" class="text-button skip-flash">Saltar esta tarjeta →</button>
+          </div>
+          <div id="flash-empty" class="empty-state" hidden><span aria-hidden="true">◇</span><h3 id="flash-empty-title">Sin tarjetas pendientes.</h3><p id="flash-empty-message" class="muted"></p><button type="button" id="restart-flash" class="secondary-button">Volver a repasar</button></div>
+        </section>
+  </div></div></dialog>
+  <p id="storage-notice" class="storage-notice" role="status" hidden>No se puede guardar en este navegador. El progreso solo se conservará durante esta sesión.</p>
+  <noscript><p class="storage-notice">Activa JavaScript para estudiar.</p></noscript>
+</body>
+</html>
