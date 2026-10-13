@@ -1,8 +1,9 @@
-:root { color-scheme: light dark; --paper:#fff; --surface:#f6f6f6; --ink:#111; --muted:#616161; --line:#ddd; --inverse:#fff; font-family:"Helvetica Neue",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif; font-size:17px; }
+:root { color-scheme: light dark; --paper:#fff; --surface:#f6f6f6; --ink:#111; --muted:#616161; --line:#ddd; --inverse:#fff; --font-helvetica:"Helvetica Neue",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif; font-family:"Google Sans",var(--font-helvetica); font-optical-sizing:auto; font-variation-settings:"GRAD" 0; font-size:17px; }
 * { box-sizing:border-box; }
 [hidden] { display:none !important; }
 body { margin:0; height:100vh; height:100dvh; overflow:hidden; background:var(--paper); color:var(--ink); display:flex; flex-direction:column; padding:0 max(20px,env(safe-area-inset-right)) 0 max(20px,env(safe-area-inset-left)); }
 h1,h2,h3,h4,p { margin:0; }
+h1,h2,h3,h4,.brand { font-family:var(--font-helvetica); }
 button,input { font:inherit; }
 button,a { -webkit-tap-highlight-color:transparent; }
 button { cursor:pointer; color:inherit; }
@@ -119,7 +120,7 @@ progress::-moz-progress-bar { background:var(--ink); }
 @media (min-width:720px) {
   .topic-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .trivial-board { grid-template-columns:repeat(3,minmax(0,1fr)); }
-  .selection-view { max-width:840px; margin:auto; }
+  .selection-view { max-width:840px; margin:0 auto; }
 }
 @media (max-width:480px) {
   .local-badge,.keyboard-hint { display:none; }

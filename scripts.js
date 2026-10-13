@@ -961,3 +961,10 @@ document.addEventListener("DOMContentLoaded", () => {
   switchMode("kahoot");
   setView("home");
 });
+
+window.addEventListener("load", () => {
+  if (!window.isSecureContext || !/^https?:$/.test(location.protocol) || !("serviceWorker" in navigator)) return;
+  navigator.serviceWorker.register("./sw.js").catch(error => {
+    console.warn("No se pudo activar el modo offline:", error);
+  });
+});
