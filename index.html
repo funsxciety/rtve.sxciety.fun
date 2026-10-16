@@ -7,9 +7,9 @@
   <meta name="theme-color" content="#111111">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="RTVE Study">
+  <meta name="apple-mobile-web-app-title" content="RTVE Estudio">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="description" content="Estudia los 18 temas de Técnica Informática RTVE con 384 preguntas, test, Trivial y flashcards.">
+  <meta name="description" content="Estudia los 18 temas de Técnica Informática RTVE con 416 preguntas, test, Trivial y flashcards.">
   <title>RTVE Estudio · Técnica Informática</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon.ico" sizes="16x16 32x32 48x48">
@@ -22,45 +22,63 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');</style>
+  <script src="study-engine.js" defer></script>
   <script src="scripts.js" defer></script>
 </head>
 <body class="view-home">
-  <header class="site-header"><a class="brand" href="index.html" aria-label="RTVE Estudio, inicio"><span class="brand-mark" aria-hidden="true">r.</span><span>RTVE Estudio<small>Técnica Informática · Banco de datos</small></span></a><span class="local-badge">Solo tú. A tu ritmo.</span></header>
+  <header class="site-header"><a class="brand" href="index.html" aria-label="RTVE Estudio, inicio"><span class="brand-mark" aria-hidden="true">r.</span><span>RTVE Estudio<small>Técnica Informática · Banco de datos</small></span></a><div class="header-tools"><span class="local-badge">Solo tú. A tu ritmo.</span><button id="show-progress" class="secondary-button progress-button" type="button" aria-haspopup="dialog" aria-controls="progress-dialog">Tu progreso <span aria-hidden="true">↗</span></button></div></header>
   <main id="main">
     <section id="home-view" class="home-view" aria-labelledby="page-title">
       <p class="eyebrow">UN POCO CADA DÍA</p>
       <h1 id="page-title">Tu próxima respuesta<br>empieza aquí.</h1>
       <p class="intro-copy">Elige qué estudiar. Entiende el porqué. Vuelve a intentarlo.</p>
-      <div class="library-stats"><span><strong id="question-total">384</strong> preguntas</span><span><strong>18</strong> temas oficiales</span><span><strong id="learned-total">0</strong> aprendidas</span></div>
-      <button id="go-play" class="primary-button" type="button">Go to play <span aria-hidden="true">↗</span></button>
+      <div class="library-stats"><span><strong id="question-total">416</strong> preguntas</span><span><strong>18</strong> temas oficiales</span><span><strong id="learned-total">0</strong> tarjetas marcadas por ti</span></div>
+      <div class="home-actions"><button id="go-play" class="primary-button" type="button">Empezar a estudiar <span aria-hidden="true">↗</span></button><button id="start-daily" class="secondary-button" type="button">Plan diario · 10 preguntas <span aria-hidden="true">→</span></button></div>
+      <details class="study-overview"><summary>Tu estudio de hoy</summary>
+        <div class="overview-content">
+          <dl class="study-metrics"><div><dt>Hoy</dt><dd id="daily-count">0 / 10</dd></div><div><dt>Repasos pendientes</dt><dd id="due-total">0</dd></div><div><dt>Preguntas practicadas</dt><dd id="tested-total">0</dd></div><div><dt>Consolidadas</dt><dd id="mastered-total">0</dd></div></dl>
+          <label class="sr-only" for="daily-progress">Preguntas distintas completadas hoy</label><progress id="daily-progress" max="10" value="0"></progress>
+          <p id="daily-message"></p><p class="overview-note">Consolidada: tres aciertos programados en días distintos. Las tarjetas marcadas manualmente no cuentan como respuestas evaluadas.</p>
+          <div class="study-consistency"><strong id="study-level">Nivel 1</strong><span id="study-xp">0 XP</span><span><strong id="study-streak">0</strong> días seguidos</span></div>
+          <h2>Últimos 7 días</h2><ul id="activity-week" class="activity-week" aria-label="Preguntas distintas de los últimos siete días"></ul>
+          <h2>Temas para reforzar</h2><ul id="weak-topics" class="weak-topics"></ul>
+        </div>
+      </details>
     </section>
     <section id="selection-view" class="selection-view" aria-labelledby="selection-title" hidden>
       <div class="selection-heading"><div><p class="eyebrow">TU SESIÓN, TUS TEMAS</p><h1 id="selection-title" tabindex="-1">¿Qué quieres estudiar?</h1></div><button id="go-home" class="text-button" type="button">← Inicio</button></div>
-      <nav class="mode-switch" aria-label="Modo de estudio"><button type="button" class="mode-button is-active" data-mode="kahoot" aria-pressed="true">Kahoot<span>Acierto y velocidad</span></button><button type="button" class="mode-button" data-mode="trivial" aria-pressed="false">Trivial<span>Una pieza por tema</span></button><button type="button" class="mode-button" data-mode="flashcards" aria-pressed="false">Flashcards<span>Aprende sin prisa</span></button></nav>
+      <nav class="mode-switch" aria-label="Modo de estudio"><button type="button" class="mode-button is-active" data-mode="practice" aria-pressed="true">Práctica<span>Responde y comprende</span></button><button type="button" class="mode-button" data-mode="exam" aria-pressed="false">Simulacro<span>Evalúate al terminar</span></button><button type="button" class="mode-button" data-mode="kahoot" aria-pressed="false">Kahoot<span>Acierto y velocidad</span></button><button type="button" class="mode-button" data-mode="trivial" aria-pressed="false">Trivial<span>Una pieza por tema</span></button><button type="button" class="mode-button" data-mode="flashcards" aria-pressed="false">Flashcards<span>Repaso manual</span></button></nav>
       <p id="mode-description" class="mode-description"></p>
       <fieldset class="topic-picker"><legend>Temario oficial · Anexo 1</legend><div class="topic-tools"><span>Incluye los temas que quieras</span><div><button id="select-all" type="button" class="text-button">Todos</button><button id="select-none" type="button" class="text-button">Ninguno</button></div></div><div id="topic-list" class="topic-list"></div></fieldset>
       <div class="selection-actions"><div><p id="selection-count" role="status"></p><p class="best-mark">Mejor marca Kahoot: <strong id="best-score">0</strong></p></div><button id="play-now" type="button" class="primary-button">Jugar ahora <span aria-hidden="true">↗</span></button></div>
     </section>
   </main>
-  <footer class="site-footer"><span>Material de preparación · No oficial</span><a href="BANCO_PREGUNTAS_RTVE_TECNICA_INFORMATICA_BD.md">Banco y fuentes ↗</a></footer>
+  <footer class="site-footer"><span>Material de preparación · No oficial</span></footer>
   <dialog id="game-dialog" class="game-dialog" aria-labelledby="game-title"><div class="game-shell"><header class="game-header"><div><span class="eyebrow">RTVE / ESTUDIO</span><h2 id="game-title">Kahoot</h2></div><button id="close-game" type="button" class="secondary-button" aria-label="Cerrar juego y volver a la selección">Cerrar <span aria-hidden="true">×</span></button></header><div class="game-content">
         <section id="kahoot-view" class="mode-view" aria-label="Kahoot individual">
           <div id="kahoot-play" hidden>
             <div class="question-meta"><p id="kahoot-meta"></p><span id="kahoot-position"></span></div>
-            <div class="timer-row"><span><strong id="timer-seconds">30</strong> s <span id="timer-state">restantes</span></span><button type="button" id="pause-timer" class="text-button" aria-pressed="false">Pausar</button></div>
-            <progress id="timer-progress" class="timer-progress" max="30" value="30" aria-label="Tiempo restante en segundos"></progress>
+            <div id="timed-hud"><div class="timer-row"><span><strong id="timer-seconds">30</strong> s <span id="timer-state">restantes</span></span><button type="button" id="pause-timer" class="text-button" aria-pressed="false">Pausar</button></div><progress id="timer-progress" class="timer-progress" max="30" value="30" aria-label="Tiempo restante en segundos"></progress></div>
+            <div id="study-session-hud" class="session-hud" hidden><strong id="session-kind"></strong><span id="session-state"></span></div>
             <h3 id="kahoot-question" class="question-title" tabindex="-1"></h3>
             <ol id="kahoot-options" class="answer-options" aria-label="Opciones de respuesta"></ol>
             <div id="kahoot-feedback" class="feedback" role="status" hidden></div>
-            <div class="question-bottom"><span>Puntos <strong id="kahoot-score">0</strong></span><span class="keyboard-hint">Teclas 1–4 para responder</span></div>
+            <button type="button" id="mark-doubt" class="secondary-button" hidden>La acerté con dudas</button>
+            <div id="exam-controls" class="exam-controls" hidden><button type="button" id="exam-prev" class="text-button">← Anterior</button><button type="button" id="exam-clear" class="text-button">Dejar en blanco</button><button type="button" id="exam-next" class="text-button">Siguiente →</button><button type="button" id="exam-finish" class="primary-button">Terminar simulacro</button></div>
+            <div id="exam-submit-area" class="exam-submit-area" hidden><p id="exam-submit-summary"></p><div class="exam-submit-actions"><button type="button" id="exam-confirm" class="primary-button">Corregir simulacro</button><button type="button" id="exam-cancel" class="secondary-button">Seguir revisando</button></div></div>
+            <div class="question-bottom"><span><span id="kahoot-score-label">ACIERTOS</span> <strong id="kahoot-score">0</strong> <span id="kahoot-score-unit"></span></span><span class="keyboard-hint">Teclas 1–4 para responder</span></div>
+            <p id="kahoot-note" class="session-note"></p>
             <button type="button" id="kahoot-next" class="primary-button" hidden>Siguiente pregunta <span aria-hidden="true">→</span></button>
           </div>
           <section id="kahoot-result" class="result-panel" aria-labelledby="result-title" hidden>
             <span class="result-symbol" aria-hidden="true">✓</span><p class="eyebrow">ENTRENAMIENTO COMPLETADO</p>
             <h3 id="result-title" tabindex="-1">Una sesión más.<br>Un paso adelante.</h3>
-            <div class="result-score"><strong id="result-score">0</strong><span>puntos</span></div>
+            <div class="result-score"><strong id="result-score">0</strong><span id="result-score-unit">puntos</span></div>
             <p id="result-accuracy" class="muted"></p>
-            <section id="result-review-area" aria-label="Repaso de errores"><h4 id="result-review-question"></h4><div id="result-review" class="feedback"></div><div class="pager"><button id="review-prev" type="button" class="text-button" aria-label="Error anterior">←</button><span id="result-review-position"></span><button id="review-next" type="button" class="text-button" aria-label="Error siguiente">→</button></div></section>
+            <p id="result-summary" class="result-summary"></p>
+            <section id="result-review-area" aria-label="Repaso de preguntas pendientes"><p id="result-review-meta" class="muted"></p><h4 id="result-review-question"></h4><div id="result-review" class="feedback"></div><div class="pager"><button id="review-prev" type="button" class="text-button" aria-label="Pregunta pendiente anterior">←</button><span id="result-review-position"></span><button id="review-next" type="button" class="text-button" aria-label="Pregunta pendiente siguiente">→</button></div></section>
+            <button type="button" id="practice-missed" class="secondary-button" hidden>Practicar los errores</button>
             <button type="button" id="restart-kahoot" class="primary-button">Otra ronda <span aria-hidden="true">↗</span></button>
           </section>
         </section>
@@ -100,7 +118,28 @@
           <div id="flash-empty" class="empty-state" hidden><span aria-hidden="true">◇</span><h3 id="flash-empty-title">Sin tarjetas pendientes.</h3><p id="flash-empty-message" class="muted"></p><button type="button" id="restart-flash" class="secondary-button">Volver a repasar</button></div>
         </section>
   </div></div></dialog>
-  <p id="storage-notice" class="storage-notice" role="status" hidden>No se puede guardar en este navegador. El progreso solo se conservará durante esta sesión.</p>
+  <dialog id="progress-dialog" class="progress-dialog" aria-labelledby="progress-title">
+    <header class="game-header"><div><span class="eyebrow">EN ESTE NAVEGADOR</span><h2 id="progress-title">Tu progreso</h2></div><button id="close-progress" class="secondary-button" type="button" aria-label="Cerrar tu progreso">Cerrar <span aria-hidden="true">×</span></button></header>
+    <div class="progress-content">
+      <p id="progress-save-status" class="muted" role="status"></p>
+      <dl class="progress-summary">
+        <div><dt>Preguntas practicadas</dt><dd id="progress-tested">0</dd></div>
+        <div><dt>Consolidadas</dt><dd id="progress-mastered">0</dd></div>
+        <div><dt>Repasos pendientes</dt><dd id="progress-due">0</dd></div>
+        <div><dt>Mejor Kahoot</dt><dd id="progress-best">0</dd></div>
+        <div><dt>Flashcards: «Aprendido» manual</dt><dd id="progress-learned">0</dd></div>
+        <div><dt>Flashcards: «Repasar» manual</dt><dd id="progress-review">0</dd></div>
+        <div><dt>Temas completados en Trivial</dt><dd id="progress-trivial">0 / 18</dd></div>
+      </dl>
+      <section class="exam-history" aria-labelledby="exam-history-title"><h3 id="exam-history-title">Últimos simulacros</h3><ul id="progress-exams" class="progress-exams"></ul></section>
+      <h3>Progreso por tema</h3>
+      <p class="muted">Una pregunta se consolida tras tres repasos programados correctos en días distintos. «Aprendido» en flashcards es una marca manual y no se evalúa. En Trivial, tres aciertos completan una pieza del tablero.</p>
+      <ul id="progress-topics" class="progress-topics"></ul>
+      <p id="progress-legacy" class="muted" hidden></p>
+      <p class="muted">Se conserva al cerrar y al volver sin conexión, después de cargar la aplicación online. Si borras los datos de este sitio, perderás el progreso. No se sincroniza con otros dispositivos.</p>
+    </div>
+  </dialog>
+  <p id="storage-notice" class="storage-notice" role="status" hidden>No se puede leer o guardar el progreso. Los cambios se conservan en esta sesión; los datos anteriores no se han borrado.</p>
   <noscript><p class="storage-notice">Activa JavaScript para estudiar.</p></noscript>
 </body>
 </html>
