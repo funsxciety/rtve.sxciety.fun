@@ -2,7 +2,7 @@ const CACHE_PREFIX = "rtve-estudio-pwa-";
 const CACHE_NAME = `${CACHE_PREFIX}v8`;
 const CACHE_FILES = [
   "./index.html", "./styles.css", "./study-engine.js", "./scripts.js", "./manifest.webmanifest",
-  "./BANCO_PREGUNTAS_RTVE_TECNICA_INFORMATICA_BD.md", "./icons/favicon.ico",
+  "./icons/favicon.ico",
   ...[16, 32, 48, 64, 72, 96, 120, 128, 144, 152, 167, 180, 192, 256, 384, 512, 1024].map(size => `./icons/icon-${size}.png`),
   "./icons/icon-maskable-192.png", "./icons/icon-maskable-512.png"
 ];
